@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chrome-node
+  labels:
+    app: selenium-chrome
+spec:
+  replicas: {{ .Values.nodeCount }}
+  selector:
+    matchLabels:
+      app: selenium-chrome
+  template:
+    metadata:
+      labels:
+        app: selenium-chrome
+    spec:
+      containers:
+        - name: selenium-chrome
+          image: "{{ .Values.chromeNode.image.repository }}:{{ .Values.chromeNode.image.tag }}"
+          ports:
+            - containerPort: 4444
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "0.5"

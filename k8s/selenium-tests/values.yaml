@@ -1,0 +1,41 @@
+replicaCount: 1
+
+nodeCount: 2
+
+seleniumServer:
+  url: http://chrome-node:4444/wd/hub
+
+image:
+  repository: gorkemc/webtest_insider
+  tag: latest
+
+chromeNode:
+  image:
+    repository: seleniarm/standalone-chromium
+    tag: latest
+
+service:
+  port: 4444
+  type: ClusterIP
+
+serviceAccount:
+  create: true
+  name: ""
+  automount: true
+  annotations: {}
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80

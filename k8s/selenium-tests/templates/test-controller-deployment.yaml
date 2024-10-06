@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-controller
+  labels:
+    app: test-controller
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: test-controller
+  template:
+    metadata:
+      labels:
+        app: test-controller
+    spec:
+      containers:
+        - name: test-runner
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          env:
+            - name: SELENIUM_SERVER_URL
+              value: "{{ .Values.seleniumServer.url }}"
+          command: ["sh", "-c", "pytest --base-url=$SELENIUM_SERVER_URL"]
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "0.5"
